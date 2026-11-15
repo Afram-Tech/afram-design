@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Onboarding - Design Prototype</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: white;
+      border-bottom: 1px solid #ebebeb;
+      padding: 16px 40px;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: #171717;
+      letter-spacing: -0.5px;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .header-nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: #5c5c5c;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .header-nav a:hover {
+      color: #171717;
+    }
+
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+      justify-content: center;
+      padding: 28px 16px;
+    }
+
+    .content-wrapper {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .step-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ebebeb;
+      color: #5c5c5c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: #007481;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 116, 129, 0.3);
+    }
+
+    .step-dot.completed {
+      background: #21b7cd;
+      color: white;
+    }
+
+    .step-line {
+      width: 20px;
+      height: 2px;
+      background: #ebebeb;
+    }
+
+    .step-line.active {
+      background: #007481;
+    }
+
+    .title-block {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .title-block h1 {
+      font-size: 30px;
+      font-weight: 600;
+      color: #171717;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .title-block p {
+      font-size: 14.5px;
+      color: #5c5c5c;
+      line-height: 22px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #ebebeb;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #171717;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .form-section-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #5c5c5c;
+      margin-bottom: 16px;
+    }
+
+    .account-type-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .account-type-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border: 2px solid #ebebeb;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #5c5c5c;
+    }
+
+    .account-type-button:hover {
+      border-color: #007481;
+      background: #f0f9fa;
+    }
+
+    .account-type-button.selected {
+      border-color: #007481;
+      background: #f0f9fa;
+      color: #007481;
+    }
+
+    .account-type-button.selected .radio {
+      border-color: #007481;
+      background: #007481;
+    }
+
+    .radio {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ebebeb;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      display: none;
+    }
+
+    .account-type-button.selected .radio::after {
+      display: block;
+    }
+
+    .icon {
+      font-size: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #171717;
+      margin-bottom: 8px;
+    }
+
+    .required::after {
+      content: '*';
+      color: #fb3748;
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ebebeb;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Outfit', sans-serif;
+      background: white;
+      color: #171717;
+      transition: all 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #007481;
+      box-shadow: 0 0 0 3px rgba(0, 116, 129, 0.1);
+      background: #f0f9fa;
+    }
+
+    input[type="text"]::placeholder {
+      color: #a3a3a3;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding-top: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-back {
+      background: white;
+      color: #5c5c5c;
+      border: 1px solid #ebebeb;
+      flex: 0 0 auto;
+    }
+
+    .btn-back:hover {
+      background: #f9fafb;
+      border-color: #007481;
+      color: #007481;
+    }
+
+    .btn-next {
+      background: #007481;
+      color: white;
+      flex: 1;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: #005a64;
+    }
+
+    .btn-next:disabled {
+      background: #ebebeb;
+      color: #a3a3a3;
+      cursor: not-allowed;
+    }
+
+    .step-screen {
+      display: none;
+    }
+
+    .step-screen.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-note {
+      background: #f0f9fa;
+      border-left: 4px solid #21b7cd;
+      padding: 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #31727f;
+      margin-top: 20px;
+    }
+
+    .info-note strong {
+      color: #007481;
+    }
+
+    .checkbox-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: #f7f7f7;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ebebeb;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .checkbox-field input[type="checkbox"] {
+      display: none;
+    }
+
+    .checkbox-field input[type="checkbox"]:checked + .checkbox {
+      background: #007481;
+      border-color: #007481;
+    }
+
+    .checkbox-field input[type="checkbox"]:checked + .checkbox::after {
+      content: '✓';
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .checkbox-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #171717;
+    }
+
+    .checkbox-sublabel {
+      font-size: 12px;
+      color: #5c5c5c;
+      margin-top: 2px;
+    }
+
+    .company-banner {
+      background: #f0f9fa;
+      border: 1px solid #cbdee1;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .company-banner-icon {
+      font-size: 20px;
+    }
+
+    .company-banner-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: #31727f;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 16px;
+      }
+
+      .title-block h1 {
+        font-size: 24px;
+      }
+
+      .main-container {
+        padding: 28px 16px;
+      }
+
+      .button-group {
+        flex-direction: column-reverse;
+      }
+
+      .btn-back,
+      .btn-next {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-logo">Afram</div>
+    <div class="header-nav">
+      <a href="#" onclick="previousStep(); return false;">← Back</a>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="content-wrapper">
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step-dot completed">1</div>
+        <div class="step-line active"></div>
+        <div class="step-dot active">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot">3</div>
+      </div>
+
+      <!-- STEP 1: Account Type Selection -->
+      <div class="step-screen active" id="step1">
+        <div class="title-block">
+          <h1>Verify Your Identity</h1>
+          <p>Upload your ID and we'll fill in your details automatically.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Account Type</div>
+          <div class="form-section-subtitle">Are you registering as an Individual or a Company?</div>
+
+          <div class="account-type-selector">
+            <button class="account-type-button" id="individual-btn" onclick="selectAccountType('individual', this)">
+              <div class="radio"></div>
+              <div class="icon">👤</div>
+              <span>Individual</span>
+            </button>
+            <button class="account-type-button" id="company-btn" onclick="selectAccountType('company', this)">
+              <div class="radio"></div>
+              <div class="icon">🏢</div>
+              <span>Company</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-back" onclick="previousStep()" disabled>Back</button>
+          <button class="btn-next" id="step1-next" onclick="nextStep()" disabled>Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 2A: Individual ID Verification -->
+      <div class="step-screen" id="step2-individual">
+        <div class="title-block">
+          <h1>Verify Your Identity</h1>
+          <p>Upload your ID and we'll fill in your details automatically.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-group">
+            <label>Upload Ghana Card Front</label>
+            <div style="
+              border: 2px dashed #ebebeb;
+              border-radius: 8px;
+              padding: 32px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+            " onmouseover="this.style.borderColor='#007481'; this.style.background='#f0f9fa';"
+               onmouseout="this.style.borderColor='#ebebeb'; this.style.background='white';">
+              <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
+              <div style="font-size: 13px; font-weight: 600; color: #171717; margin-bottom: 4px;">
+                Click to upload or drag & drop
+              </div>
+              <div style="font-size: 12px; color: #5c5c5c;">JPG, PNG · Max 5MB</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Ghana Card Back</label>
+            <div style="
+              border: 2px dashed #ebebeb;
+              border-radius: 8px;
+              padding: 32px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+            " onmouseover="this.style.borderColor='#007481'; this.style.background='#f0f9fa';"
+               onmouseout="this.style.borderColor='#ebebeb'; this.style.background='white';">
+              <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
+              <div style="font-size: 13px; font-weight: 600; color: #171717; margin-bottom: 4px;">
+                Click to upload or drag & drop
+              </div>
+              <div style="font-size: 12px; color: #5c5c5c;">JPG, PNG · Max 5MB</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <strong>💡 Tip:</strong> Make sure both sides of your ID are clearly visible and well-lit for best results.
+        </div>
+
+        <div class="button-group">
+          <button class="btn-back" onclick="previousStep()">Back</button>
+          <button class="btn-next" onclick="nextStep()">Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 2B: Company Rep ID Verification -->
+      <div class="step-screen" id="step2-company">
+        <div class="company-banner">
+          <div class="company-banner-icon">🏢</div>
+          <div class="company-banner-text">Company Representative</div>
+        </div>
+
+        <div class="title-block">
+          <h1>Verify Your Identity</h1>
+          <p>Upload your ID and we'll fill in your details automatically.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-group">
+            <label>Upload Ghana Card Front</label>
+            <div style="
+              border: 2px dashed #ebebeb;
+              border-radius: 8px;
+              padding: 32px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+            " onmouseover="this.style.borderColor='#007481'; this.style.background='#f0f9fa';"
+               onmouseout="this.style.borderColor='#ebebeb'; this.style.background='white';">
+              <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
+              <div style="font-size: 13px; font-weight: 600; color: #171717; margin-bottom: 4px;">
+                Click to upload or drag & drop
+              </div>
+              <div style="font-size: 12px; color: #5c5c5c;">JPG, PNG · Max 5MB</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Ghana Card Back</label>
+            <div style="
+              border: 2px dashed #ebebeb;
+              border-radius: 8px;
+              padding: 32px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+            " onmouseover="this.style.borderColor='#007481'; this.style.background='#f0f9fa';"
+               onmouseout="this.style.borderColor='#ebebeb'; this.style.background='white';">
+              <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
+              <div style="font-size: 13px; font-weight: 600; color: #171717; margin-bottom: 4px;">
+                Click to upload or drag & drop
+              </div>
+              <div style="font-size: 12px; color: #5c5c5c;">JPG, PNG · Max 5MB</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <strong>💡 Tip:</strong> Make sure both sides of your ID are clearly visible and well-lit for best results.
+        </div>
+
+        <div class="button-group">
+          <button class="btn-back" onclick="previousStep()">Back</button>
+          <button class="btn-next" onclick="nextStep()">Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 3A: Individual Details -->
+      <div class="step-screen" id="step3-individual">
+        <div class="title-block">
+          <h1>Confirm Your Details</h1>
+          <p>Review what we've pre-filled and add a few quick details — then you're in.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Your Identity</div>
+          <div class="form-section-subtitle">Extracted from your uploaded ID — review and confirm</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" value="John Kwame Mensah" disabled style="background: #f0f9fa; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input type="text" value="15 Mar, 1990" disabled style="background: #f0f9fa; cursor: not-allowed;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">A Few More Details</div>
+          <div class="form-section-subtitle">Quick information to complete your profile</div>
+
+          <div class="form-group">
+            <label class="required">Nationality</label>
+            <select>
+              <option>Select nationality</option>
+              <option>Ghanaian</option>
+              <option>Nigerian</option>
+              <option>Kenyan</option>
+            </select>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="required">City / Town</label>
+              <input type="text" placeholder="e.g. Accra">
+            </div>
+            <div class="form-group">
+              <label class="required">Country of Residence</label>
+              <select>
+                <option>Select country</option>
+                <option>Ghana</option>
+                <option>Nigeria</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="required">Tax Identification Number (TIN)</label>
+            <input type="text" placeholder="e.g. GHA-123456789-0 or P0001234567">
+          </div>
+
+          <div class="checkbox-field">
+            <input type="checkbox" id="agree-individual">
+            <div class="checkbox"></div>
+            <div>
+              <div class="checkbox-label">I confirm the details above are accurate</div>
+              <div class="checkbox-sublabel">Your data is processed securely and in compliance with data protection regulations.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-back" onclick="previousStep()">Back</button>
+          <button class="btn-next" onclick="nextStep()">Submit</button>
+        </div>
+      </div>
+
+      <!-- STEP 3B: Company Details -->
+      <div class="step-screen" id="step3-company">
+        <div class="company-banner">
+          <div class="company-banner-icon">🏢</div>
+          <div class="company-banner-text">Company Representative</div>
+        </div>
+
+        <div class="title-block">
+          <h1>Rep & Company Info</h1>
+          <p>Review what we've pre-filled and add a few quick details — then you're in.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Your Identity</div>
+          <div class="form-section-subtitle">Extracted from your uploaded ID — review and confirm</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" value="John Kwame Mensah" disabled style="background: #f0f9fa; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input type="text" value="15 Mar, 1990" disabled style="background: #f0f9fa; cursor: not-allowed;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Your Details</div>
+          <div class="form-section-subtitle">Who you are within the company</div>
+
+          <div class="form-group">
+            <label class="required">Your Job Title / Designation</label>
+            <input type="text" placeholder="e.g. CEO, Managing Director">
+          </div>
+
+          <div class="form-group">
+            <label class="required">Nationality</label>
+            <select>
+              <option>Select nationality</option>
+              <option>Ghanaian</option>
+              <option>Nigerian</option>
+            </select>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="required">City / Town</label>
+              <input type="text" placeholder="e.g. Accra">
+            </div>
+            <div class="form-group">
+              <label class="required">Country of Residence</label>
+              <select>
+                <option>Select country</option>
+                <option>Ghana</option>
+                <option>Nigeria</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checkbox-field">
+            <input type="checkbox" id="authority-confirm">
+            <div class="checkbox"></div>
+            <div>
+              <div class="checkbox-label">I confirm I am authorised to submit this application on behalf of the company</div>
+              <div class="checkbox-sublabel">A board resolution or other authorisation may be requested during a financing application.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Company Basics</div>
+          <div class="form-section-subtitle">Just the essentials to get your company account created</div>
+
+          <div class="form-group">
+            <label class="required">Registered Company Name</label>
+            <input type="text" placeholder="Enter name as registered with the Registrar General">
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="required">Registration Number</label>
+              <input type="text" placeholder="e.g. CS123456789">
+            </div>
+            <div class="form-group">
+              <label class="required">Company Type</label>
+              <select>
+                <option>Select type</option>
+                <option>Private Limited (Ltd)</option>
+                <option>Public Limited (Plc)</option>
+                <option>Sole Proprietorship</option>
+                <option>Partnership</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="required">Business Email</label>
+              <input type="email" placeholder="info@company.com">
+            </div>
+            <div class="form-group">
+              <label class="required">Business Phone</label>
+              <input type="text" placeholder="+233 XX XXX XXXX">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="required">Company Tax Identification Number (TIN)</label>
+            <input type="text" placeholder="e.g. C0001234567">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Certificate of Incorporation</div>
+          <div class="form-section-subtitle">Upload the certificate issued by the Registrar General</div>
+          <div class="form-group">
+            <label class="required">Certificate of Incorporation</label>
+            <div style="
+              border: 2px dashed #ebebeb;
+              border-radius: 8px;
+              padding: 32px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+            " onmouseover="this.style.borderColor='#007481'; this.style.background='#f0f9fa';"
+               onmouseout="this.style.borderColor='#ebebeb'; this.style.background='white';">
+              <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
+              <div style="font-size: 13px; font-weight: 600; color: #171717; margin-bottom: 4px;">
+                Click to upload or drag & drop
+              </div>
+              <div style="font-size: 12px; color: #5c5c5c;">PDF, JPG or PNG · Max 5MB</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkbox-field">
+          <input type="checkbox" id="agree-company">
+          <div class="checkbox"></div>
+          <div>
+            <div class="checkbox-label">I confirm the details above are accurate</div>
+            <div class="checkbox-sublabel">Your data is processed securely and in compliance with data protection regulations.</div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-back" onclick="previousStep()">Back</button>
+          <button class="btn-next" onclick="nextStep()">Submit</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let selectedAccountType = null;
+
+    function selectAccountType(type, button) {
+      selectedAccountType = type;
+
+      // Update button states
+      document.getElementById('individual-btn').classList.remove('selected');
+      document.getElementById('company-btn').classList.remove('selected');
+      button.classList.add('selected');
+
+      // Enable next button
+      document.getElementById('step1-next').disabled = false;
+    }
+
+    function nextStep() {
+      if (currentStep === 1) {
+        if (!selectedAccountType) return;
+
+        // Hide step 1
+        document.getElementById('step1').classList.remove('active');
+
+        if (selectedAccountType === 'individual') {
+          // Show individual path
+          currentStep = 2;
+          document.getElementById('step2-individual').classList.add('active');
+        } else {
+          // Show company path
+          currentStep = 2;
+          document.getElementById('step2-company').classList.add('active');
+        }
+      } else if (currentStep === 2) {
+        // Go to step 3
+        if (selectedAccountType === 'individual') {
+          document.getElementById('step2-individual').classList.remove('active');
+          document.getElementById('step3-individual').classList.add('active');
+        } else {
+          document.getElementById('step2-company').classList.remove('active');
+          document.getElementById('step3-company').classList.add('active');
+        }
+        currentStep = 3;
+      } else if (currentStep === 3) {
+        alert('✅ Account verified successfully!\n\nYou can now start listing properties.');
+      }
+
+      updateStepIndicator();
+    }
+
+    function previousStep() {
+      if (currentStep === 1) return;
+
+      if (currentStep === 2) {
+        // Go back to step 1
+        if (selectedAccountType === 'individual') {
+          document.getElementById('step2-individual').classList.remove('active');
+        } else {
+          document.getElementById('step2-company').classList.remove('active');
+        }
+        document.getElementById('step1').classList.add('active');
+        currentStep = 1;
+      } else if (currentStep === 3) {
+        // Go back to step 2
+        if (selectedAccountType === 'individual') {
+          document.getElementById('step3-individual').classList.remove('active');
+          document.getElementById('step2-individual').classList.add('active');
+        } else {
+          document.getElementById('step3-company').classList.remove('active');
+          document.getElementById('step2-company').classList.add('active');
+        }
+        currentStep = 2;
+      }
+
+      updateStepIndicator();
+    }
+
+    function updateStepIndicator() {
+      // This is a placeholder for visual step indicator updates
+      // In a real app, you'd update the step dots here
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* ═════════════════════════════════════════════════════════════════════════
+   Afram design system v1: tokens
+   ─────────────────────────────────────────────────────────────────────────
+   The single source of truth for colour, depth, radius and spacing, ported
+   from afram-exchange-v2 (UI_OVERHAUL.md; design system artifact
+   claude.ai/artifact/EVjHatuSb2M63XPDdhrnMt).
+
+   Utility names follow the Align UI vocabulary the design system uses, so
+   a V2 screen and its afram-web port read the same:
+
+     text-text-strong · text-text-sub · text-text-soft · text-text-brand
+     bg-bg-app · bg-bg-white-0 · bg-bg-weak-50 · bg-bg-soft-200
+     border-stroke-soft-200 · border-stroke-strong
+     bg-primary-base · bg-primary-lighter · bg-success-lighter …
+
+   The older scales in assets/css/colors.css (`primary-50…900`,
+   `success-50…900` and friends) still resolve; new UI uses these names.
+   The shadcn HSL variables in index.css are set to the same palette.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Brand teal ─── */
+  --primary-darker: #003d44;
+  --primary-dark: #005a64;
+  --primary-base: #007481;
+  --primary-light: #b3e1e6;
+  --primary-lighter: #f0f9fa;
+  --primary-wash: #dcf3f4;
+  --text-brand: #007481;
+  --on-primary: #ffffff;
+
+  /* ─── Deep ground (hero banners, welcome, tour). Same in both themes. ─── */
+  --deep-950: #00262a;
+  --deep-900: #013a40;
+  --deep-800: #0a5961;
+  --glow: #0eaabb;
+  --ice: #7eeaf3;
+  --on-deep: #ffffff;
+  --deep-success: #7ee2ab; /* positive deltas on the deep ground */
+
+  /* ─── Logo inks: the mark and the wordmark only ─── */
+  --mark-dark: #00565e;
+  --mark-mid: #007481;
+  --mark-light: #45a4b5;
+  --wordmark: #25272c;
+
+  /* ─── Neutrals, with a faint teal bias ─── */
+  --bg-app: #f4f6f6;
+  --bg-white-0: #ffffff;
+  --bg-weak-50: #f6f8f8;
+  --bg-soft-200: #e9eeee;
+  --bg-sub-300: #cdd5d6;
+  --bg-strong-950: #0f1a1c;
+  --stroke-soft: #e3e8e9;
+  --stroke-strong: #c9d1d3;
+  --text-strong: #0f1a1c;
+  --text-sub: #526063;
+  --text-soft: #627176;
+  --text-disabled: #b3bec0;
+  --text-inverse: #ffffff;
+
+  /* ─── States: -lighter fills, -dark marks, -darker text ─── */
+  --state-success-lighter: #e3f7ec;
+  --state-success-light: #c2f5da;
+  --state-success-dark: #1fc16b;
+  --state-success-darker: #0b4627;
+  --state-warning-lighter: #fff3eb;
+  --state-warning-light: #ffd9c0;
+  --state-warning-dark: #fa7319;
+  --state-warning-darker: #71330a;
+  --state-error-lighter: #ffebec;
+  --state-error-light: #ffc0c5;
+  --state-error-dark: #fb3748;
+  --state-error-darker: #681219;
+  --state-information-lighter: #ebf1ff;
+  --state-information-light: #c0d5ff;
+  --state-information-dark: #335cff;
+  --state-information-darker: #122368;
+  --state-away-lighter: #fffaeb;
+  --state-away-light: #ffecc0;
+  --state-away-dark: #f6b51e;
+  --state-away-darker: #624c18;
+  --state-verified-lighter: #ebf8ff;
+  --state-verified-light: #c0eaff;
+  --state-verified-dark: #47c2ff;
+  --state-verified-darker: #124b68;
+
+  /* ─── Spacing: a 4px grid ─── */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* ─── Radius ladder: pills for controls, 24 heroes and modals, 20 cards,
+         16 panels inside cards, 12 inputs, 10 and 6 small chips ─── */
+  --radius-6: 6px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-full: 9999px;
+
+  /* ─── Depth: a crisp 1px edge plus a soft shadow ─── */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 26, 28, 0.05);
+  --shadow-card: 0 1px 2px 0 rgba(15, 26, 28, 0.04), 0 2px 6px -2px rgba(15, 26, 28, 0.06);
+  --shadow-raised: 0 1px 2px 0 rgba(15, 26, 28, 0.05), 0 10px 24px -10px rgba(0, 61, 68, 0.2);
+  --shadow-float:
+    0 0 0 1px rgba(15, 26, 28, 0.05), 0 4px 8px -2px rgba(15, 26, 28, 0.06),
+    0 16px 32px -8px rgba(15, 26, 28, 0.14);
+  --shadow-modal:
+    0 0 0 1px rgba(15, 26, 28, 0.05), 0 10px 24px -6px rgba(15, 26, 28, 0.12),
+    0 24px 60px -12px rgba(15, 26, 28, 0.28);
+  --shadow-banner:
+    0 4px 12px -2px rgba(0, 116, 129, 0.12), 0 12px 32px -8px rgba(0, 116, 129, 0.25);
+  --shadow-primary:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 0 rgba(0, 38, 42, 0.28),
+    0 1px 2px 0 rgba(0, 61, 68, 0.24), 0 4px 12px -4px rgba(0, 116, 129, 0.45);
+  --shadow-secondary: inset 0 -1px 0 0 rgba(15, 26, 28, 0.06), 0 1px 2px 0 rgba(15, 26, 28, 0.06);
+  --shadow-focus: 0 0 0 1px #007481, 0 0 0 4px rgba(0, 116, 129, 0.18);
+
+  /* ─── The Afram field: a light-teal well, quiet at rest, ringed on focus ─── */
+  --field-bg: var(--primary-lighter);
+  --field-border: rgba(0, 116, 129, 0.1);
+  --field-hover: rgba(0, 116, 129, 0.28);
+
+  /* ─── File-format badges (Align UI File Format Icons). Data colours. ─── */
+  --file-pdf: #e5484d;
+  --file-doc: #335cff;
+  --file-xls: #1a9e5c;
+  --file-ppt: #f0640f;
+  --file-img: #0b8bd0;
+  --file-video: #007481;
+  --file-zip: #627176;
+
+  /* ─── Overlay behind modals and drawers ─── */
+  --scrim: rgba(0, 38, 42, 0.55);
+}
+
+/* ─── Dark theme: a deep teal-black. The deep ground and logo stay put. ─── */
+.dark {
+  --primary-light: rgba(0, 116, 129, 0.32);
+  --primary-lighter: rgba(0, 116, 129, 0.15);
+  --primary-wash: #0f2a2e;
+  --text-brand: #6ccbd8;
+  --wordmark: #eef3f3;
+
+  --bg-app: #0a1113;
+  --bg-white-0: #111a1c;
+  --bg-weak-50: #162124;
+  --bg-soft-200: #1d2a2d;
+  --bg-sub-300: #2c3c40;
+  --bg-strong-950: #eef3f3;
+  --stroke-soft: #213034;
+  --stroke-strong: #33474b;
+  --text-strong: #eef3f3;
+  --text-sub: #a1b0b3;
+  --text-soft: #869599;
+  --text-disabled: #4a5b5f;
+  --text-inverse: #0f1a1c;
+
+  --state-success-lighter: rgba(31, 193, 107, 0.12);
+  --state-success-light: rgba(31, 193, 107, 0.24);
+  --state-success-darker: #7ee2ab;
+  --state-warning-lighter: rgba(250, 115, 25, 0.12);
+  --state-warning-light: rgba(250, 115, 25, 0.24);
+  --state-warning-darker: #ffb385;
+  --state-error-lighter: rgba(251, 55, 72, 0.12);
+  --state-error-light: rgba(251, 55, 72, 0.24);
+  --state-error-darker: #ff9aa3;
+  --state-information-lighter: rgba(51, 92, 255, 0.14);
+  --state-information-light: rgba(51, 92, 255, 0.26);
+  --state-information-dark: #6f8cff;
+  --state-information-darker: #a9bcff;
+  --state-away-lighter: rgba(246, 181, 30, 0.12);
+  --state-away-light: rgba(246, 181, 30, 0.24);
+  --state-away-darker: #ffd57a;
+  --state-verified-lighter: rgba(71, 194, 255, 0.12);
+  --state-verified-light: rgba(71, 194, 255, 0.24);
+  --state-verified-darker: #9adcff;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.5), 0 2px 8px -2px rgba(0, 0, 0, 0.4);
+  --shadow-raised: 0 1px 2px 0 rgba(0, 0, 0, 0.5), 0 12px 28px -10px rgba(0, 0, 0, 0.7);
+  --shadow-float:
+    0 0 0 1px rgba(255, 255, 255, 0.04), 0 4px 8px -2px rgba(0, 0, 0, 0.5),
+    0 16px 32px -8px rgba(0, 0, 0, 0.7);
+  --shadow-modal:
+    0 0 0 1px rgba(255, 255, 255, 0.05), 0 10px 24px -6px rgba(0, 0, 0, 0.6),
+    0 24px 60px -12px rgba(0, 0, 0, 0.8);
+  --shadow-banner: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+  --shadow-primary:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+    0 1px 2px 0 rgba(0, 0, 0, 0.5), 0 4px 12px -4px rgba(0, 116, 129, 0.5);
+  --shadow-secondary: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-focus: 0 0 0 1px #6ccbd8, 0 0 0 4px rgba(0, 116, 129, 0.4);
+  --field-border: rgba(108, 203, 216, 0.14);
+  --field-hover: rgba(108, 203, 216, 0.32);
+}
+
+/* ─── Tailwind utilities for every token above ───
+   `inline` so each utility reads the variable at use, and the `.dark`
+   overrides apply without a `dark:` variant. */
+@theme inline {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Montserrat is the only UI face. `font-mono`, `font-serif` and the
+     preflight rule for <code>/<pre>/<kbd> would otherwise fall back to the
+     system mono/serif stacks; references and account numbers line up with
+     `tabular-nums` instead. Signatures set their script face inline. */
+  --font-mono: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Brand */
+  --color-primary-base: var(--primary-base);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-darker: var(--primary-darker);
+  --color-primary-light: var(--primary-light);
+  --color-primary-lighter: var(--primary-lighter);
+  --color-primary-wash: var(--primary-wash);
+  --color-on-primary: var(--on-primary);
+
+  /* Deep ground */
+  --color-deep-950: var(--deep-950);
+  --color-deep-900: var(--deep-900);
+  --color-deep-800: var(--deep-800);
+  --color-glow: var(--glow);
+  --color-ice: var(--ice);
+  --color-on-deep: var(--on-deep);
+  --color-deep-success: var(--deep-success);
+
+  /* Text */
+  --color-text-strong: var(--text-strong);
+  --color-text-sub: var(--text-sub);
+  --color-text-soft: var(--text-soft);
+  --color-text-disabled: var(--text-disabled);
+  --color-text-inverse: var(--text-inverse);
+  --color-text-brand: var(--text-brand);
+
+  /* Surfaces */
+  --color-bg-app: var(--bg-app);
+  --color-bg-white-0: var(--bg-white-0);
+  --color-bg-weak-50: var(--bg-weak-50);
+  --color-bg-soft-200: var(--bg-soft-200);
+  --color-bg-sub-300: var(--bg-sub-300);
+  --color-bg-strong-950: var(--bg-strong-950);
+
+  /* Strokes */
+  --color-stroke-soft-200: var(--stroke-soft);
+  --color-stroke-soft: var(--stroke-soft);
+  --color-stroke-strong: var(--stroke-strong);
+
+  /* Fields */
+  --color-field: var(--field-bg);
+  --color-field-border: var(--field-border);
+
+  /* States: lighter (fill), light, base (= dark, the saturated mark), dark, darker (text) */
+  --color-success-lighter: var(--state-success-lighter);
+  --color-success-light: var(--state-success-light);
+  --color-success-base: var(--state-success-dark);
+  --color-success-dark: var(--state-success-dark);
+  --color-success-darker: var(--state-success-darker);
+  --color-warning-lighter: var(--state-warning-lighter);
+  --color-warning-light: var(--state-warning-light);
+  --color-warning-base: var(--state-warning-dark);
+  --color-warning-dark: var(--state-warning-dark);
+  --color-warning-darker: var(--state-warning-darker);
+  --color-error-lighter: var(--state-error-lighter);
+  --color-error-light: var(--state-error-light);
+  --color-error-base: var(--state-error-dark);
+  --color-error-dark: var(--state-error-dark);
+  --color-error-darker: var(--state-error-darker);
+  --color-information-lighter: var(--state-information-lighter);
+  --color-information-light: var(--state-information-light);
+  --color-information-base: var(--state-information-dark);
+  --color-information-dark: var(--state-information-dark);
+  --color-information-darker: var(--state-information-darker);
+  --color-away-lighter: var(--state-away-lighter);
+  --color-away-light: var(--state-away-light);
+  --color-away-base: var(--state-away-dark);
+  --color-away-dark: var(--state-away-dark);
+  --color-away-darker: var(--state-away-darker);
+  --color-verified-lighter: var(--state-verified-lighter);
+  --color-verified-light: var(--state-verified-light);
+  --color-verified-base: var(--state-verified-dark);
+  --color-verified-dark: var(--state-verified-dark);
+  --color-verified-darker: var(--state-verified-darker);
+}

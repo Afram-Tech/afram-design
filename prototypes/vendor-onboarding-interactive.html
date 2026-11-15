@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Onboarding - Interactive Flow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecef 100%);
+      padding: 20px;
+      min-height: 100vh;
+      color: #171717;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 40px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .header h1 {
+      font-size: 32px;
+      color: #007481;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 16px;
+      color: #5c5c5c;
+    }
+
+    .flow-selector {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .flow-button {
+      padding: 15px 30px;
+      border: 2px solid #007481;
+      background: white;
+      color: #007481;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .flow-button:hover {
+      background: #f0f9fa;
+      transform: translateY(-2px);
+    }
+
+    .flow-button.active {
+      background: #007481;
+      color: white;
+    }
+
+    .flow-container {
+      display: none;
+    }
+
+    .flow-container.active {
+      display: block;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      border-left: 4px solid #007481;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 116, 129, 0.12);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: #007481;
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .step-card h3 {
+      color: #007481;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .step-description {
+      color: #5c5c5c;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .step-details {
+      background: #f0f9fa;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #006570;
+    }
+
+    .step-details ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .step-details li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .step-details li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #21b7cd;
+      font-weight: bold;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 40px 0;
+      position: relative;
+      color: #5c5c5c;
+      font-weight: 600;
+    }
+
+    .divider::before {
+      content: "";
+      display: block;
+      height: 2px;
+      background: #ebebeb;
+      margin-bottom: 15px;
+    }
+
+    .comparison-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 40px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .comparison-section h2 {
+      color: #007481;
+      font-size: 22px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table thead {
+      background: #007481;
+      color: white;
+    }
+
+    .comparison-table th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .comparison-table td {
+      padding: 15px;
+      border-bottom: 1px solid #ebebeb;
+      font-size: 13px;
+    }
+
+    .comparison-table tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    .highlight-good {
+      color: #21b7cd;
+      font-weight: 600;
+    }
+
+    .icon {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    .path-label {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #f0f9fa;
+      color: #007481;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #f0f9fa 0%, #e5f4f6 100%);
+      border-left: 4px solid #21b7cd;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .summary-box h4 {
+      color: #007481;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .summary-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .summary-box li {
+      padding: 6px 0;
+      color: #5c5c5c;
+      font-size: 13px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .summary-box li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #21b7cd;
+      font-weight: bold;
+    }
+
+    .timeline-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .timeline-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid #21b7cd;
+    }
+
+    .timeline-label {
+      font-weight: 600;
+      color: #007481;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .timeline-value {
+      color: #5c5c5c;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-selector {
+        flex-direction: column;
+      }
+
+      .flow-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏠 Vendor Onboarding Flow</h1>
+      <p>Interactive guide showing Individual and Company registration paths</p>
+    </div>
+
+    <div class="flow-selector">
+      <button class="flow-button active" onclick="showFlow('common')">
+        <span class="icon">📋</span> Common Steps
+      </button>
+      <button class="flow-button" onclick="showFlow('individual')">
+        <span class="icon">👤</span> Individual Vendor
+      </button>
+      <button class="flow-button" onclick="showFlow('company')">
+        <span class="icon">🏢</span> Company Vendor
+      </button>
+      <button class="flow-button" onclick="showFlow('comparison')">
+        <span class="icon">📊</span> Comparison
+      </button>
+    </div>
+
+    <!-- COMMON STEPS -->
+    <div id="common" class="flow-container active">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Sign Up & Account Creation</h3>
+          <p class="step-description">Create your secure account with email and password</p>
+          <div class="step-details">
+            <ul>
+              <li>Email & Password</li>
+              <li>Account Security Setup</li>
+              <li>Email Verification</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Account Type Selection</h3>
+          <p class="step-description">Choose whether you're registering as Individual or Company</p>
+          <div class="step-details">
+            <ul>
+              <li>Individual Vendor</li>
+              <li>Company Vendor</li>
+              <li>Different paths based on choice</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>🎯 What Happens Next</h4>
+        <ul>
+          <li>Click below to explore Individual or Company vendor paths</li>
+          <li>Each path has optimized steps for your account type</li>
+          <li>You can switch between paths anytime during registration</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INDIVIDUAL VENDOR PATH -->
+    <div id="individual" class="flow-container">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="path-label">👤 Individual Path</div>
+          <div class="step-number">1</div>
+          <h3>Sign Up & Account Creation</h3>
+          <p class="step-description">Create your secure account</p>
+          <div class="step-details">
+            <ul>
+              <li>Email & Password</li>
+              <li>Account Verification</li>
+              <li>Role Selection: Vendor</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">👤 Individual Path</div>
+          <div class="step-number">2</div>
+          <h3>Account Type Selection</h3>
+          <p class="step-description">Select Individual Vendor option</p>
+          <div class="step-details">
+            <ul>
+              <li>Choose "Individual"</li>
+              <li>Simplified form path</li>
+              <li>Personal verification only</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">👤 Individual Path</div>
+          <div class="step-number">3</div>
+          <h3>Personal Identity Verification</h3>
+          <p class="step-description">Upload your Ghana Card for verification</p>
+          <div class="step-details">
+            <ul>
+              <li>Upload Ghana Card (Front)</li>
+              <li>Upload Ghana Card (Back)</li>
+              <li>Auto-extraction of details</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">👤 Individual Path</div>
+          <div class="step-number">4</div>
+          <h3>Confirm Personal Details</h3>
+          <p class="step-description">Review extracted info and provide TIN</p>
+          <div class="step-details">
+            <ul>
+              <li>Full Name (auto-populated)</li>
+              <li>Date of Birth (auto-populated)</li>
+              <li>Personal TIN (P-prefix or GHA format)</li>
+              <li>Nationality & Residence</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">👤 Individual Path</div>
+          <div class="step-number">5</div>
+          <h3>Ready to List Properties</h3>
+          <p class="step-description">Start selling properties immediately</p>
+          <div class="step-details">
+            <ul>
+              <li>Upload Property Details</li>
+              <li>Set Financing Terms</li>
+              <li>Receive Buyer Interest</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>✅ Individual Vendor Benefits</h4>
+        <ul>
+          <li>Faster registration process (3-5 minutes)</li>
+          <li>Minimal compliance documentation</li>
+          <li>List properties immediately after account setup</li>
+          <li>Personal TIN (P-prefix or Ghana Card PIN accepted)</li>
+        </ul>
+      </div>
+
+      <div class="timeline-info">
+        <div class="timeline-item">
+          <div class="timeline-label">⏱️ Signup Time</div>
+          <div class="timeline-value">3-5 minutes</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">📝 Compliance</div>
+          <div class="timeline-value">Minimal - ID only</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">🚀 Start Listing</div>
+          <div class="timeline-value">Immediately</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPANY VENDOR PATH -->
+    <div id="company" class="flow-container">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">1</div>
+          <h3>Sign Up & Account Creation</h3>
+          <p class="step-description">Create your secure company account</p>
+          <div class="step-details">
+            <ul>
+              <li>Email & Password</li>
+              <li>Account Verification</li>
+              <li>Role Selection: Vendor</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">2</div>
+          <h3>Account Type Selection</h3>
+          <p class="step-description">Select Company Vendor option</p>
+          <div class="step-details">
+            <ul>
+              <li>Choose "Company"</li>
+              <li>Company representative path</li>
+              <li>Full compliance tracking</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">3</div>
+          <h3>Company Rep Identity Verification</h3>
+          <p class="step-description">Upload representative's Ghana Card</p>
+          <div class="step-details">
+            <ul>
+              <li>Upload Rep's Ghana Card (Front)</li>
+              <li>Upload Rep's Ghana Card (Back)</li>
+              <li>Auto-extraction of rep details</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">4</div>
+          <h3>Representative & Company Info</h3>
+          <p class="step-description">Details about rep and company authorization</p>
+          <div class="step-details">
+            <ul>
+              <li>Rep Full Name (auto-populated)</li>
+              <li>Rep Job Title/Designation</li>
+              <li>Rep Nationality & Residence</li>
+              <li>Authority Confirmation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">5</div>
+          <h3>Company Basics</h3>
+          <p class="step-description">Essential company information</p>
+          <div class="step-details">
+            <ul>
+              <li>Registered Company Name</li>
+              <li>Registration Number</li>
+              <li>Company Type</li>
+              <li>Business Email & Phone</li>
+              <li>Company TIN (C/G/Q/V-prefix)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">6</div>
+          <h3>Certificate of Incorporation</h3>
+          <p class="step-description">Upload company registration certificate</p>
+          <div class="step-details">
+            <ul>
+              <li>Upload Certificate</li>
+              <li>Format: PDF, JPG, PNG</li>
+              <li>Max file size: 5MB</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="path-label">🏢 Company Path</div>
+          <div class="step-number">7</div>
+          <h3>Ready to List Properties</h3>
+          <p class="step-description">Start selling properties on behalf of company</p>
+          <div class="step-details">
+            <ul>
+              <li>Upload Property Details</li>
+              <li>Set Financing Terms</li>
+              <li>Receive Buyer Interest</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>✅ Company Vendor Benefits</h4>
+        <ul>
+          <li>Comprehensive company verification</li>
+          <li>Legal protection through authorization confirmation</li>
+          <li>Company TIN in proper entity format</li>
+          <li>Compliance centre seeded with incorporation certificate</li>
+          <li>Professional business representation</li>
+        </ul>
+      </div>
+
+      <div class="timeline-info">
+        <div class="timeline-item">
+          <div class="timeline-label">⏱️ Signup Time</div>
+          <div class="timeline-value">5-10 minutes</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">📝 Compliance</div>
+          <div class="timeline-value">Comprehensive docs</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-label">🚀 Start Listing</div>
+          <div class="timeline-value">After doc upload</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div id="comparison" class="flow-container">
+      <div class="comparison-section">
+        <h2>📊 Individual vs Company Vendor Comparison</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th><span class="icon">👤</span> Individual Vendor</th>
+              <th><span class="icon">🏢</span> Company Vendor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Signup Time</strong></td>
+              <td><span class="highlight-good">3-5 minutes</span></td>
+              <td>5-10 minutes</td>
+            </tr>
+            <tr>
+              <td><strong>Identity Verification</strong></td>
+              <td><span class="highlight-good">Personal ID only</span></td>
+              <td>Rep ID + Company docs</td>
+            </tr>
+            <tr>
+              <td><strong>TIN Type</strong></td>
+              <td><span class="highlight-good">Personal (P or GHA)</span></td>
+              <td>Company (C/G/Q/V)</td>
+            </tr>
+            <tr>
+              <td><strong>Authorization</strong></td>
+              <td><span class="highlight-good">Self-authorized</span></td>
+              <td>Rep must confirm authority</td>
+            </tr>
+            <tr>
+              <td><strong>Documentation</strong></td>
+              <td><span class="highlight-good">ID only</span></td>
+              <td>ID + Incorporation Cert</td>
+            </tr>
+            <tr>
+              <td><strong>Compliance</strong></td>
+              <td><span class="highlight-good">Minimal</span></td>
+              <td>Full compliance review</td>
+            </tr>
+            <tr>
+              <td><strong>Start Listing</strong></td>
+              <td><span class="highlight-good">Immediately</span></td>
+              <td>After doc submission</td>
+            </tr>
+            <tr>
+              <td><strong>Best For</strong></td>
+              <td>Property owners, independent dealers</td>
+              <td>Developers, property companies</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="summary-box">
+          <h4>🎯 Choosing Your Path</h4>
+          <ul>
+            <li><strong>Choose Individual if:</strong> You're a property owner or independent dealer selling your own properties</li>
+            <li><strong>Choose Company if:</strong> You represent a registered company, development firm, or real estate business</li>
+            <li><strong>Switch Anytime:</strong> You can change between Individual and Company during registration</li>
+            <li><strong>Both Options:</strong> Support seller financing, property listing, and buyer connections</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showFlow(flowId) {
+      // Hide all flows
+      const flows = document.querySelectorAll('.flow-container');
+      flows.forEach(flow => flow.classList.remove('active'));
+
+      // Show selected flow
+      document.getElementById(flowId).classList.add('active');
+
+      // Update button states
+      const buttons = document.querySelectorAll('.flow-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.closest('.flow-button').classList.add('active');
+    }
+  </script>
+</body>
+</html>
